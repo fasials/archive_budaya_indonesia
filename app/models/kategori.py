@@ -1,7 +1,6 @@
 from sqlalchemy.dialects.postgresql import ENUM
 from app.extensions import db
 
-# Tipe enum sudah dibuat lewat SQL, jadi create_type=False
 KATEGORI_ENUM = ENUM(
     "Tari", "Pakaian", "Kerajinan", "Pertunjukan", "Musik Tradisional",
     name="enum_kategori",

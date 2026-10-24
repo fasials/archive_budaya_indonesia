@@ -30,7 +30,7 @@ def _clean(data, partial=False):
     """Validasi body. Return (data_bersih, pesan_error)."""
     clean = {}
 
-    if not partial:  # POST & PUT: field wajib harus lengkap
+    if not partial:  
         for field in REQUIRED_FIELDS:
             if field not in data or data[field] in (None, ""):
                 return None, f"Field {field} wajib diisi"
@@ -53,7 +53,7 @@ def _clean(data, partial=False):
             return None, f"Provinsi dengan id {value} tidak ditemukan"
         clean["id_provinsi"] = value
 
-    if "id_kategori" in data:  # opsional: isi tabel pivot kategoribudaya
+    if "id_kategori" in data:  
         ids = data["id_kategori"]
         if not isinstance(ids, list) or not all(_is_int(i) for i in ids):
             return None, "Field id_kategori harus berupa list angka, contoh [1, 4]"
