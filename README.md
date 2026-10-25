@@ -1,77 +1,17 @@
 # API Peta Budaya Indonesia
 
-REST API untuk menyimpan dan menelusuri **kekayaan budaya Indonesia** berdasarkan pulau, provinsi, dan kategori (tari, pakaian, kerajinan, pertunjukan, musik tradisional). Project ini dibuat sebagai Tugas Akhir *Learning Labs: Backend Development*.
+REST API untuk menyimpan dan menelusuri kekayaan budaya Indonesia berdasarkan asal daerah dengan kategori dan deskripsi budaya tersebut.
 
-Setiap budaya terhubung ke provinsinya (dan otomatis ke pulaunya), bisa memiliki lebih dari satu kategori, dan bisa memiliki beberapa media (gambar).
-
-| | |
+| Properti | Nilai |
 |---|---|
-| **Deployment (Vercel)** | https://archivebudayaindonesia.vercel.app |
-| **Repository (GitHub)** | `https://github.com/<username>/<nama-repo>` ← *ganti dengan link repo kamu* |
-| **Tech stack** | Python, Flask, Flask-SQLAlchemy, PostgreSQL (Supabase), Vercel |
+| Deployment (Vercel) | https://archivebudayaindonesia.vercel.app |
+| Format payload | JSON |
+| Content-Type request | `application/json` |
+| Format respons | JSON dengan properti `status`, dan lain sebagainya seperti `message`, `data`, `meta`, atau `errors` |
 
-## Daftar Isi
+## Skema Database dan ERD
 
-1. [Skema Database dan ERD](#1-skema-database-dan-erd)
-2. [Daftar Endpoint](#2-daftar-endpoint)
-3. [Dokumentasi Pemanggilan API](#3-dokumentasi-pemanggilan-api)
-4. [Format Error](#4-format-error)
-5. [Cara Menjalankan Secara Lokal](#5-cara-menjalankan-secara-lokal)
-6. [Deployment ke Vercel](#6-deployment-ke-vercel)
-7. [Pengujian](#7-pengujian)
-8. [Struktur Project](#8-struktur-project)
-
----
-
-## 1. Skema Database dan ERD
-
-Database memakai **PostgreSQL** (Supabase) dengan schema `peta_budaya_indonesia` dan **6 tabel** yang saling berelasi lewat foreign key.
-
-![ERD Peta Budaya Indonesia](docs/erd.png)
-
-*Diagram dibuat dengan [dbdiagram.io](https://dbdiagram.io). Kode DBML ada di [`docs/erd.dbml`](docs/erd.dbml).*
-
-Versi teks dari diagram yang sama (otomatis tampil di GitHub):
-
-```mermaid
-erDiagram
-    pulau ||--o{ provinsi : "memiliki"
-    provinsi ||--o{ budaya : "memiliki"
-    budaya ||--o{ kategoribudaya : "dikategorikan"
-    kategori ||--o{ kategoribudaya : "mengelompokkan"
-    budaya ||--o{ media : "memiliki"
-
-    pulau {
-        bigint id PK
-        varchar nama_pulau
-    }
-    provinsi {
-        bigint id PK
-        varchar nama_provinsi
-        varchar ibu_kota
-        bigint id_pulau FK
-    }
-    budaya {
-        bigint id PK
-        bigint id_provinsi FK
-        varchar nama_budaya
-        text deskripsi_budaya
-    }
-    kategori {
-        bigint id PK
-        enum nama_kategori
-    }
-    kategoribudaya {
-        bigint id PK
-        bigint id_budaya FK
-        bigint id_kategori FK
-    }
-    media {
-        bigint id PK
-        bigint id_budaya FK
-        varchar url_media
-    }
-```
+![ERD Peta Budaya Indonesia](drawSQL-image-export-2026-10-25.webp)
 
 ### Relasi antar tabel
 
@@ -85,8 +25,6 @@ erDiagram
 Semua foreign key memakai `ON DELETE CASCADE` dan `ON UPDATE CASCADE`. Menghapus sebuah budaya otomatis menghapus media dan relasi kategorinya. Tabel `kategori` memakai tipe ENUM `enum_kategori` dengan nilai: `Tari`, `Pakaian`, `Kerajinan`, `Pertunjukan`, `Musik Tradisional`.
 
 File SQL: [`database/01_struktur.sql`](database/01_struktur.sql) (struktur) dan [`database/02_data_dummy.sql`](database/02_data_dummy.sql) (data contoh).
-
----
 
 ## 2. Daftar Endpoint
 
@@ -726,7 +664,6 @@ Collection berisi 25 request yang mencakup semua endpoint, termasuk skenario err
 ├── pengujian/               # collection dan screenshot pengujian
 ├── .env.example
 ├── .python-version
-├── index.py                 # entrypoint Vercel
 ├── requirements.txt
 ├── run.py                   # entrypoint lokal
 └── vercel.json
