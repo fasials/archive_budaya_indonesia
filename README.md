@@ -22,95 +22,167 @@ REST API untuk menyimpan dan menelusuri kekayaan budaya Indonesia berdasarkan as
 | `budaya` → `media` | one-to-many | Satu budaya memiliki banyak media |
 | `budaya` ↔ `kategori` | **many-to-many** | Lewat tabel pivot `kategoribudaya`. Satu budaya bisa punya beberapa kategori, dan satu kategori dipakai banyak budaya |
 
-Semua foreign key memakai `ON DELETE CASCADE` dan `ON UPDATE CASCADE`. Menghapus sebuah budaya otomatis menghapus media dan relasi kategorinya. Tabel `kategori` memakai tipe ENUM `enum_kategori` dengan nilai: `Tari`, `Pakaian`, `Kerajinan`, `Pertunjukan`, `Musik Tradisional`.
-
-File SQL: [`database/01_struktur.sql`](database/01_struktur.sql) (struktur) dan [`database/02_data_dummy.sql`](database/02_data_dummy.sql) (data contoh).
-
-## 2. Daftar Endpoint
-
-Base URL: `https://archivebudayaindonesia.vercel.app`
-
-| Method | Endpoint | Fungsi | Status sukses |
-|---|---|---|---|
-| GET | `/budaya` | Daftar budaya (pagination dan filter) | 200 |
-| GET | `/budaya/{id}` | Detail budaya | 200 |
-| POST | `/budaya` | Tambah budaya | 201 |
-| PUT | `/budaya/{id}` | Ubah seluruh data budaya | 200 |
-| PATCH | `/budaya/{id}` | Ubah sebagian data budaya | 200 |
-| DELETE | `/budaya/{id}` | Hapus budaya | 200 |
-| GET | `/pulau` | Daftar pulau | 200 |
-| GET | `/pulau/{id}` | Detail pulau | 200 |
-| GET | `/provinsi` | Daftar provinsi | 200 |
-| GET | `/provinsi/{id}` | Detail provinsi | 200 |
-| GET | `/kategori` | Daftar kategori | 200 |
-| GET | `/kategori/{id}` | Detail kategori | 200 |
-| GET | `/media` | Daftar media | 200 |
-| GET | `/media/{id}` | Detail media | 200 |
-
-Resource utama dengan **CRUD lengkap** adalah `budaya`. Request dan response memakai format **JSON**. Endpoint daftar mendukung pagination lewat `?page=` dan `?per_page=` (default 10, maksimal 100) dengan respons berisi `data` dan `meta`.
-
-Endpoint pendukung (`/` dan `/db-check`) mengembalikan status aplikasi dan koneksi database.
-
----
-
-## 3. Dokumentasi Pemanggilan API
+## Daftar Endpoint
 
 ### 1. Daftar Budaya
 ```
-Method       : GET
-URL          : https://archivebudayaindonesia.vercel.app/budaya
-Deskripsi    : Mengambil daftar budaya (dengan pagination dan filter)
-Headers      : -
-Request Body : -
-Response Sukses (200):
+- Method       : GET
+- URL          : https://archivebudayaindonesia.vercel.app/budaya
+- Deskripsi    : Mengambil daftar budaya (dengan pagination dan filter)
+- Headers      : -
+- Request Body : -
+- Response Sukses (200):
   {
     "data": [
       {
-        "deskripsi_budaya": "Tarian tradisional yang berkembang di lingkungan budaya Jawa.",
-        "id": 1,
-        "id_provinsi": 1,
-        "kategori": [
-          "Pertunjukan",
-          "Tari"
-        ],
-        "media": [
-          "https://example.com/tari-gambyong.jpg",
-          "https://example.com/tari-gambyong-2.jpg"
-        ],
-        "nama_budaya": "Tari Gambyong",
-        "provinsi": "Jawa Tengah",
-        "pulau": "Jawa"
-      },
-      {
-        "deskripsi_budaya": "Seni pertunjukan wayang dengan tokoh yang dimainkan di balik layar.",
-        "id": 2,
-        "id_provinsi": 1,
-        "kategori": [
-          "Pertunjukan",
-          "Kerajinan"
-        ],
-        "media": [
-          "https://example.com/wayang-kulit.jpg"
-        ],
-        "nama_budaya": "Wayang Kulit",
-        "provinsi": "Jawa Tengah",
-        "pulau": "Jawa"
-      }
-    ],
-    "meta": {
-      "page": 1,
-      "per_page": 2,
-      "total": 8,
-      "total_pages": 4
+  "data": [
+    {
+      "deskripsi_budaya": "Tarian tradisional yang berkembang di lingkungan budaya Jawa.",
+      "id": 1,
+      "id_provinsi": 1,
+      "kategori": [
+        "Pertunjukan",
+        "Tari"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Gambyong_Langenkusuma_Pj_DSC_1322.JPG#/media/Berkas:Gambyong_Langenkusuma_Pj_DSC_1322.JPG",
+        "https://www.youtube.com/watch?v=BqWw4HPHq1o"
+      ],
+      "nama_budaya": "Tari Gambyong",
+      "provinsi": "Jawa Tengah",
+      "pulau": "Jawa"
+    },
+    {
+      "deskripsi_budaya": "Seni pertunjukan wayang dengan tokoh yang dimainkan di balik layar.",
+      "id": 2,
+      "id_provinsi": 1,
+      "kategori": [
+        "Pertunjukan",
+        "Kerajinan"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Wayang_Performance.jpg#/media/Berkas:Wayang_Performance.jpg"
+      ],
+      "nama_budaya": "Wayang Kulit",
+      "provinsi": "Jawa Tengah",
+      "pulau": "Jawa"
+    },
+    {
+      "deskripsi_budaya": "Alat musik tradisional yang dimainkan dengan cara digoyangkan.",
+      "id": 3,
+      "id_provinsi": 2,
+      "kategori": [
+        "Kerajinan",
+        "Musik Tradisional"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Angklung_(2315119130).jpg#/media/Berkas:Angklung_(2315119130).jpg"
+      ],
+      "nama_budaya": "Angklung",
+      "provinsi": "Jawa Barat",
+      "pulau": "Jawa"
+    },
+    {
+      "deskripsi_budaya": "Busana tradisional yang dikenakan dalam berbagai acara adat.",
+      "id": 4,
+      "id_provinsi": 2,
+      "kategori": [
+        "Pakaian",
+        "Kerajinan"
+      ],
+      "media": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbSh9hWnQMhHDmVTj9st9V40vu7t96wFYI4Lna_BNN1ztfqZwrCaXTljk&s=10"
+      ],
+      "nama_budaya": "Kebaya Sunda",
+      "provinsi": "Jawa Barat",
+      "pulau": "Jawa"
+    },
+    {
+      "deskripsi_budaya": "Seni pertunjukan tradisional yang terkenal dengan dadak merak.",
+      "id": 5,
+      "id_provinsi": 3,
+      "kategori": [
+        "Pertunjukan",
+        "Tari"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Reog_ponorogo_dalam_event_eksotika_bromo.jpg#/media/Berkas:Reog_ponorogo_dalam_event_eksotika_bromo.jpg"
+      ],
+      "nama_budaya": "Reog Ponorogo",
+      "provinsi": "Jawa Timur",
+      "pulau": "Jawa"
+    },
+    {
+      "deskripsi_budaya": "Pertunjukan tari yang menggunakan paduan suara penari sebagai pengiring.",
+      "id": 6,
+      "id_provinsi": 4,
+      "kategori": [
+        "Pertunjukan",
+        "Tari"
+      ],
+      "media": [
+        "https://asset.kompas.com/crops/gdNDwiSsNMPkNbgaB2v5m8Q6l1k=/2x0:1000x665/1200x800/data/photo/2023/02/23/63f753ada95a3.jpg"
+      ],
+      "nama_budaya": "Tari Kecak",
+      "provinsi": "Bali",
+      "pulau": "Bali"
+    },
+    {
+      "deskripsi_budaya": "Tarian tradisional yang menggunakan piring sebagai properti tari.",
+      "id": 7,
+      "id_provinsi": 5,
+      "kategori": [
+        "Pertunjukan",
+        "Tari"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Tari_Piring_dan_Pecahan_Kaca.jpg#/media/Berkas:Tari_Piring_dan_Pecahan_Kaca.jpg"
+      ],
+      "nama_budaya": "Tari Piring",
+      "provinsi": "Sumatera Barat",
+      "pulau": "Sumatera"
+    },
+    {
+      "deskripsi_budaya": "Kain tradisional dengan hiasan benang emas atau perak.",
+      "id": 8,
+      "id_provinsi": 5,
+      "kategori": [
+        "Pakaian",
+        "Kerajinan"
+      ],
+      "media": [
+        "https://commons.wikimedia.org/wiki/File:Tenunan_songket_khas_Minangkabau.jpg#/media/Berkas:Tenunan_songket_khas_Minangkabau.jpg"
+      ],
+      "nama_budaya": "Songket Minangkabau",
+      "provinsi": "Sumatera Barat",
+      "pulau": "Sumatera"
+    },
+    {
+      "deskripsi_budaya": "Motif batik klasik.",
+      "id": 10,
+      "id_provinsi": 1,
+      "kategori": [
+        "Pakaian",
+        "Kerajinan"
+      ],
+      "media": [],
+      "nama_budaya": "Batik Parang",
+      "provinsi": "Jawa Tengah",
+      "pulau": "Jawa"
     }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 10,
+    "total": 9,
+    "total_pages": 1
   }
+}
 Response Error (400):
   {
     "error": "Kategori tidak valid. Pilihan: Tari, Pakaian, Kerajinan, Pertunjukan, Musik Tradisional"
   }
 ```
-Query parameter opsional: `q` (cari nama budaya), `id_provinsi`, `kategori` (`Tari`, `Pakaian`, `Kerajinan`, `Pertunjukan`, `Musik Tradisional`), `page` (default 1), `per_page` (default 10, maksimal 100). Contoh di atas memakai `?per_page=2`; contoh error memakai `?kategori=Salah`.
-
 
 ### 2. Detail Budaya
 ```
@@ -121,23 +193,23 @@ Headers      : -
 Request Body : -
 Response Sukses (200):
   {
-    "data": {
-      "deskripsi_budaya": "Tarian tradisional yang berkembang di lingkungan budaya Jawa.",
-      "id": 1,
-      "id_provinsi": 1,
-      "kategori": [
-        "Pertunjukan",
-        "Tari"
-      ],
-      "media": [
-        "https://example.com/tari-gambyong.jpg",
-        "https://example.com/tari-gambyong-2.jpg"
-      ],
-      "nama_budaya": "Tari Gambyong",
-      "provinsi": "Jawa Tengah",
-      "pulau": "Jawa"
-    }
+  "data": {
+    "deskripsi_budaya": "Tarian tradisional yang berkembang di lingkungan budaya Jawa.",
+    "id": 1,
+    "id_provinsi": 1,
+    "kategori": [
+      "Pertunjukan",
+      "Tari"
+    ],
+    "media": [
+      "https://commons.wikimedia.org/wiki/File:Gambyong_Langenkusuma_Pj_DSC_1322.JPG#/media/Berkas:Gambyong_Langenkusuma_Pj_DSC_1322.JPG",
+      "https://www.youtube.com/watch?v=BqWw4HPHq1o"
+    ],
+    "nama_budaya": "Tari Gambyong",
+    "provinsi": "Jawa Tengah",
+    "pulau": "Jawa"
   }
+}
 Response Error (404):
   {
     "error": "Budaya tidak ditemukan"
@@ -164,7 +236,7 @@ Response Sukses (201):
   {
     "data": {
       "deskripsi_budaya": "Motif batik klasik dari Jawa.",
-      "id": 9,
+      "id": 11,
       "id_provinsi": 1,
       "kategori": [
         "Pakaian",
@@ -182,8 +254,6 @@ Response Error (400):
     "error": "Field nama_budaya wajib diisi"
   }
 ```
-Field wajib: `nama_budaya`, `deskripsi_budaya`, `id_provinsi`. Field opsional `id_kategori` berisi list id kategori (mengisi tabel pivot `kategoribudaya`). Contoh error di atas dikirim tanpa `nama_budaya`.
-
 
 ### 4. Ubah Seluruh Data Budaya (PUT)
 ```
@@ -196,37 +266,38 @@ Request Body :
     "nama_budaya": "Batik Kawung",
     "deskripsi_budaya": "Motif kawung dari Jawa Tengah.",
     "id_provinsi": 1
+    "id_kategori": [
+      1,
+      4
   }
 Response Sukses (200):
   {
-    "data": {
-      "deskripsi_budaya": "Motif kawung dari Jawa Tengah.",
-      "id": 9,
-      "id_provinsi": 1,
-      "kategori": [
-        "Pakaian",
-        "Kerajinan"
-      ],
-      "media": [],
-      "nama_budaya": "Batik Kawung",
-      "provinsi": "Jawa Tengah",
-      "pulau": "Jawa"
-    },
-    "message": "Budaya berhasil diperbarui"
-  }
+  "data": {
+    "deskripsi_budaya": "Motif batik klasik dari",
+    "id": 11,
+    "id_provinsi": 2,
+    "kategori": [
+      "Pertunjukan",
+      "Tari"
+    ],
+    "media": [],
+    "nama_budaya": "Batik S",
+    "provinsi": "Jawa Barat",
+    "pulau": "Jawa"
+  },
+  "message": "Budaya berhasil diperbarui"
+}
 Response Error (400):
   {
     "error": "Field deskripsi_budaya wajib diisi"
   }
 ```
-Contoh error di atas dikirim hanya dengan `nama_budaya` (data tidak lengkap). Id yang tidak ada menghasilkan `404` `{"error": "Budaya tidak ditemukan"}`.
-
 
 ### 5. Ubah Sebagian Data Budaya (PATCH)
 ```
 Method       : PATCH
 URL          : https://archivebudayaindonesia.vercel.app/budaya/9
-Deskripsi    : Mengubah sebagian field budaya (cukup kirim field yang ingin diubah)
+Deskripsi    : Mengubah sebagian field budaya
 Headers      : Content-Type: application/json
 Request Body :
   {
@@ -236,34 +307,32 @@ Request Body :
     ]
   }
 Response Sukses (200):
-  {
-    "data": {
-      "deskripsi_budaya": "Deskripsi diperbarui lewat PATCH.",
-      "id": 9,
-      "id_provinsi": 1,
-      "kategori": [
-        "Kerajinan"
-      ],
-      "media": [],
-      "nama_budaya": "Batik Kawung",
-      "provinsi": "Jawa Tengah",
-      "pulau": "Jawa"
-    },
-    "message": "Budaya berhasil diperbarui"
-  }
+ {
+  "data": {
+    "deskripsi_budaya": "Deskripsi diperbarui lewat PATCH.",
+    "id": 11,
+    "id_provinsi": 2,
+    "kategori": [
+      "Kerajinan"
+    ],
+    "media": [],
+    "nama_budaya": "Batik S",
+    "provinsi": "Jawa Barat",
+    "pulau": "Jawa"
+  },
+  "message": "Budaya berhasil diperbarui"
+}
 Response Error (400):
   {
     "error": "Tidak ada field yang diubah"
   }
 ```
-Contoh error di atas dikirim dengan body kosong `{}`.
-
 
 ### 6. Hapus Budaya
 ```
 Method       : DELETE
 URL          : https://archivebudayaindonesia.vercel.app/budaya/9
-Deskripsi    : Menghapus budaya (media dan relasi kategorinya ikut terhapus otomatis)
+Deskripsi    : Menghapus budaya
 Headers      : -
 Request Body : -
 Response Sukses (200):
@@ -275,8 +344,6 @@ Response Error (404):
     "error": "Budaya tidak ditemukan"
   }
 ```
-Contoh error di atas muncul saat menghapus id yang sudah tidak ada.
-
 
 ### 7. Daftar Pulau
 ```
@@ -342,8 +409,8 @@ Response Error (404):
 ### 9. Daftar Provinsi
 ```
 Method       : GET
-URL          : https://archivebudayaindonesia.vercel.app/provinsi?id_pulau=1
-Deskripsi    : Mengambil daftar provinsi (filter opsional `id_pulau`)
+URL          : https://archivebudayaindonesia.vercel.app/provinsi
+Deskripsi    : Mengambil daftar provinsi
 Headers      : -
 Request Body : -
 Response Sukses (200):
@@ -420,29 +487,41 @@ Response Error (404):
 ### 11. Daftar Kategori
 ```
 Method       : GET
-URL          : https://archivebudayaindonesia.vercel.app/kategori?per_page=2
+URL          : https://archivebudayaindonesia.vercel.app/kategori
 Deskripsi    : Mengambil daftar kategori
 Headers      : -
 Request Body : -
 Response Sukses (200):
   {
-    "data": [
-      {
-        "id": 1,
-        "nama_kategori": "Pertunjukan"
-      },
-      {
-        "id": 2,
-        "nama_kategori": "Pakaian"
-      }
-    ],
-    "meta": {
-      "page": 1,
-      "per_page": 2,
-      "total": 5,
-      "total_pages": 3
+  "data": [
+    {
+      "id": 1,
+      "nama_kategori": "Pertunjukan"
+    },
+    {
+      "id": 2,
+      "nama_kategori": "Pakaian"
+    },
+    {
+      "id": 3,
+      "nama_kategori": "Kerajinan"
+    },
+    {
+      "id": 4,
+      "nama_kategori": "Tari"
+    },
+    {
+      "id": 5,
+      "nama_kategori": "Musik Tradisional"
     }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 10,
+    "total": 5,
+    "total_pages": 1
   }
+}
 Response Error (400):
   {
     "error": "Parameter page dan per_page harus berupa angka bulat positif"
@@ -490,8 +569,8 @@ Response Error (404):
 ### 13. Daftar Media
 ```
 Method       : GET
-URL          : https://archivebudayaindonesia.vercel.app/media?id_budaya=1
-Deskripsi    : Mengambil daftar media (filter opsional `id_budaya`)
+URL          : https://archivebudayaindonesia.vercel.app/media
+Deskripsi    : Mengambil daftar media 
 Headers      : -
 Request Body : -
 Response Sukses (200):
@@ -544,22 +623,7 @@ Response Error (404):
 
 ---
 
-## 4. Format Error
-
-Semua error dikembalikan dalam JSON dengan format `{"error": "pesan"}`.
-
-| Status | Arti | Contoh pesan |
-|---|---|---|
-| `400` | Input tidak valid | `Field nama_budaya wajib diisi` |
-| `404` | Data atau endpoint tidak ditemukan | `Budaya tidak ditemukan` |
-| `405` | Method tidak diizinkan | `Method tidak diizinkan untuk endpoint ini` |
-| `500` | Error server | `Terjadi kesalahan pada server` |
-
-Detail teknis error server tidak dikirim ke client, hanya dicatat di log.
-
----
-
-## 5. Cara Menjalankan Secara Lokal
+## Cara Menjalankan Secara Lokal
 
 **Prasyarat:** Python 3.12 atau lebih baru, dan database PostgreSQL (Supabase atau PostgreSQL lokal).
 
