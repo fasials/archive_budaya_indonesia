@@ -622,7 +622,7 @@ Response Error (404):
 ```
 
 ---
-## 4. Format Error
+## Format Error
 
 Semua error dikembalikan dalam JSON dengan format `{"error": "pesan"}`.
 
