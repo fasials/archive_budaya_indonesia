@@ -26,9 +26,7 @@ Semua foreign key memakai `ON DELETE CASCADE` dan `ON UPDATE CASCADE`. Menghapus
 
 File SQL: [`database/01_struktur.sql`](database/01_struktur.sql) (struktur) dan [`database/02_data_dummy.sql`](database/02_data_dummy.sql) (data contoh).
 
-## 2. Daftar Endpoint
-
-Base URL: `https://archivebudayaindonesia.vercel.app`
+## 2. Daftar Endpoint`
 
 | Method | Endpoint | Fungsi | Status sukses |
 |---|---|---|---|
