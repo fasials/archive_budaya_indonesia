@@ -622,7 +622,20 @@ Response Error (404):
 ```
 
 ---
+## 4. Format Error
 
+Semua error dikembalikan dalam JSON dengan format `{"error": "pesan"}`.
+
+| Status | Arti | Contoh pesan |
+|---|---|---|
+| `400` | Input tidak valid | `Field nama_budaya wajib diisi` |
+| `404` | Data atau endpoint tidak ditemukan | `Budaya tidak ditemukan` |
+| `405` | Method tidak diizinkan | `Method tidak diizinkan untuk endpoint ini` |
+| `500` | Error server | `Terjadi kesalahan pada server` |
+
+Detail teknis error server tidak dikirim ke client, hanya dicatat di log.
+
+---
 ## Cara Menjalankan Secara Lokal
 
 **Prasyarat:** Python 3.12 atau lebih baru, dan database PostgreSQL (Supabase atau PostgreSQL lokal).
@@ -700,11 +713,9 @@ Saat berjalan di Vercel, aplikasi memakai `NullPool` karena pooling koneksi dita
 
 Seluruh endpoint diuji memakai **Thunder Client** dengan URL Vercel (bukan `localhost`).
 
-- Collection pengujian (format Postman 2.1): [`pengujian/peta_budaya.postman_collection.json`](pengujian/peta_budaya.postman_collection.json)
-- Environment untuk Vercel: [`pengujian/peta_budaya_vercel.postman_environment.json`](pengujian/peta_budaya_vercel.postman_environment.json)
-- Screenshot bukti pengujian: folder [`pengujian/screenshot/`](pengujian/screenshot/)
+- Screenshot bukti pengujian: folder [`dokumentasi`](pengujian/)
 
-Collection berisi 25 request yang mencakup semua endpoint, termasuk skenario error (400, 404, 405).
+Collection berisi 14 endpoint.
 
 ---
 
@@ -719,16 +730,15 @@ Collection berisi 25 request yang mencakup semua endpoint, termasuk skenario err
 │   ├── models/              # satu file per tabel
 │   ├── routes/              # blueprint per resource
 │   └── utils/               # fungsi bantu (respons, validasi, pagination)
-├── database/
-│   ├── 01_struktur.sql
-│   └── 02_data_dummy.sql
-├── docs/
-│   ├── erd.dbml
-│   └── erd.png
-├── pengujian/               # collection dan screenshot pengujian
+├── dokumentasi/             # screenshot pengujian
+│   └── end1.png
+│   └── end2.png
+|    .....
+├── pengujian/               
 ├── .env.example
-├── .python-version
 ├── requirements.txt
 ├── run.py                   # entrypoint lokal
-└── vercel.json
+├── vercel.json
+├── struktur.sql
+└── data_dummy.sql
 ```
