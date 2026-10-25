@@ -24,7 +24,7 @@ REST API untuk menyimpan dan menelusuri kekayaan budaya Indonesia berdasarkan as
 
 Semua foreign key memakai `ON DELETE CASCADE` dan `ON UPDATE CASCADE`. Menghapus sebuah budaya otomatis menghapus media dan relasi kategorinya. Tabel `kategori` memakai tipe ENUM `enum_kategori` dengan nilai: `Tari`, `Pakaian`, `Kerajinan`, `Pertunjukan`, `Musik Tradisional`.
 
-File SQL: [`database/01_struktur.sql`](database/01_struktur.sql) (struktur) dan [`database/02_data_dummy.sql`](database/02_data_dummy.sql) (data contoh).
+File SQL: [`struktur.sql`](struktur.sql) (struktur) dan [`data_dummy.sql`](data_dummy.sql) (data contoh).
 
 ## 2. Daftar Endpoint
 
