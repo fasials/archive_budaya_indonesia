@@ -713,7 +713,7 @@ Saat berjalan di Vercel, aplikasi memakai `NullPool` karena pooling koneksi dita
 
 Seluruh endpoint diuji memakai **Thunder Client** dengan URL Vercel (bukan `localhost`).
 
-- Screenshot bukti pengujian: folder [`dokumentasi`](pengujian/)
+- Screenshot bukti pengujian: folder [`dokumentasi`](dokumentasi/)
 
 Collection berisi 14 endpoint.
 
@@ -733,11 +733,10 @@ Collection berisi 14 endpoint.
 ├── dokumentasi/             # screenshot pengujian
 │   └── end1.png
 │   └── end2.png
-|    .....
-├── pengujian/               
+|   └── ....         
 ├── .env.example
 ├── requirements.txt
-├── run.py                   # entrypoint lokal
+├── run.py                  
 ├── vercel.json
 ├── struktur.sql
 └── data_dummy.sql
