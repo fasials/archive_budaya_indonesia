@@ -1,6 +1,6 @@
 # API Peta Budaya Indonesia
 
-REST API untuk menyimpan dan menelusuri **kekayaan budaya Indonesia** berdasarkan pulau, provinsi, dan kategori (tari, pakaian, kerajinan, pertunjukan, musik tradisional). Project ini dibuat sebagai Tugas Akhir *Learning Labs: Backend Development*.
+REST API untuk menyimpan dan menelusuri **kekayaan budaya Indonesia** berdasarkan pulau, provinsi, dan kategori (tari, pakaian, kerajinan, pertunjukan, musik tradisional).
 
 Setiap budaya terhubung ke provinsinya (dan otomatis ke pulaunya), bisa memiliki lebih dari satu kategori, dan bisa memiliki beberapa media (gambar).
 
