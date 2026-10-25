@@ -1,6 +1,6 @@
 # API Peta Budaya Indonesia
 
-REST API untuk menyimpan dan menelusuri kekayaan budaya Indonesia berdasarkan asal daerah dengan kategori dan deskripsi budaya tersebut.
+REST API untuk menyimpan dan menelusuri kekayaan budaya Indonesia berdasarkan asal daerah dengan kategori dan deskripsinya.
 
 | Properti | Nilai |
 |---|---|
